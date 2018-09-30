@@ -78,7 +78,7 @@ public class Queue<Node> {
 
     public void removeAll() {
         for (int i = 0; i < queue.length; i++) {
-            queue[i] = null;
+            get();
         }
     }
 

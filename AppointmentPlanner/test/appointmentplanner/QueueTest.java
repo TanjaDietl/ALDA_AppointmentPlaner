@@ -66,12 +66,14 @@ public class QueueTest {
         assertTrue(q.isFull());
         
     }
+    
+   
 
     /**
-     * Test of deQueue method, of class Queue.
+     * Test of testRemoveAll method, of class Queue.
      */
     @Test
-    public void testGet() { 
+    public void testRemoveAll() { 
         Appointment app1 = new Appointment("App1", new TimeSpan(1, 0));
         Appointment app2 = new Appointment("App2", new TimeSpan(1, 0));
         Appointment app3 = new Appointment("App3", new TimeSpan(1, 0));
@@ -94,20 +96,9 @@ public class QueueTest {
         q.put(app5);
         assertEquals(5, q.getSize()); 
         
+        q.removeAll();
+        assertEquals(0, q.getSize()); 
         
-        //Start Deleting:
-        q.get();
-        q.get();
-        q.get();
-        q.get();
-        q.get();
-        q.get();
-        assertEquals(0, q.getSize());
-        q.put(app6);
-        assertEquals(1, q.getSize());
-        q.put(app5);
-        assertEquals(2, q.getSize()); 
-        q.show();
         
         
 
