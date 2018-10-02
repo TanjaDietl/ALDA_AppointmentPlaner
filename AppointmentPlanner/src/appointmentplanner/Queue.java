@@ -62,7 +62,7 @@ public class Queue<Node> {
             front = (front + 1) % initialSizeValue;
             index--;
         }else{
-            System.out.println("Queue is ");
+            System.out.println("Queue is Empty");
         }
         return queue[front];
     }

@@ -118,7 +118,7 @@ public final class Time {
             hourToMins = hrs * 60;
             result = hourToMins + minutes;
 
-            if (result < 0) {
+            if (result <= 0) {
                 result = 0;
             }
 

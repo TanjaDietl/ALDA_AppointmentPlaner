@@ -27,6 +27,7 @@ public final class Day {
     private Node<Appointment> nodeToInsert;
     private Queue<Appointment> appointmentsQueue;
     private final int nr;
+    private boolean weekend = false;
 
     /**
      * The number of appointments added by the user.
@@ -72,10 +73,16 @@ public final class Day {
         String dayName = DAYS[this.nr - 1];
         this.nrOfAppointments = 1;
 
-        lunchBreakNode = new Node<>(LUNCH_BREAK);
+        if (nr == 6 || nr == 7) {
+            dummyHead.next = dummyTail;
+            weekend = true;
+        } else {
+            lunchBreakNode = new Node<>(LUNCH_BREAK);
 
-        dummyHead.next = lunchBreakNode;
-        lunchBreakNode.next = dummyTail;
+            dummyHead.next = lunchBreakNode;
+            lunchBreakNode.next = dummyTail;
+        }
+
     }
 
     /**
@@ -154,14 +161,16 @@ public final class Day {
                     if (runner.item == null) {
                         if (runner.next.item.getStart() != DAY_START) {
                             possibleTimeSpanBetweenNodes = new TimeSpan(DAY_START, runner.next.item.getStart());
-                            initialized = true;
+                            if (possibleTimeSpanBetweenNodes.isSmallerThan(neededTimeSpanBetweenNodes)) {
+                                initialized = false;
+                            } else {
+                                initialized = true;
+                            }
                         } else {
+
                             initialized = false;
                         }
 
-                    } else {
-                        possibleTimeSpanBetweenNodes = new TimeSpan(runner.item.getStart(), runner.next.item.getStart());
-                        initialized = true;
                     }
 
                 }
@@ -179,12 +188,17 @@ public final class Day {
 
         //After initialzing the possibleTimeSpanBetweenNodes, the Result Compare take place here
         if (initialized) {
+            System.out.println("neededTimeSpanBetweenNodes " + neededTimeSpanBetweenNodes);
+            System.out.println("possibleTimeSpanBetweenNodes " + possibleTimeSpanBetweenNodes);
             if (neededTimeSpanBetweenNodes.isSmallerThan(possibleTimeSpanBetweenNodes)) {
+                System.out.println("3.1");
                 return true;
             } else {
+                System.out.println("3.2");
                 return false;
             }
         }
+        System.out.println("4");
         return false;
 
     }
@@ -226,47 +240,48 @@ public final class Day {
      */
     public void addAppointment(Appointment appointment) {
         Node<Appointment> appToInsert = new Node<>(appointment);
+        if (!weekend) {
+            if (!containsAppointmentWithDescription(appToInsert.item.getDescription())) {
+                if (canAddAppointmentOfDuration(appointment.getDuration())) {
+                    if (appointment.getStart() == null) {
+                        if (runner.next != null) {
+                            if (runner.item == null) {
+                                appToInsert.item.setStart(DAY_START);
+                                appToInsert.next = runner.next;
+                                runner.next = appToInsert;
+                                nrOfAppointments++;
+                                System.out.println("Appointment with no StartTime added: " + appToInsert.item.getDescription());
+                            } else {
+                                appToInsert.item.setStart(runner.item.getEnd());
+                                appToInsert.next = runner.next;
+                                runner.next = appToInsert;
+                                nrOfAppointments++;
+                                System.out.println("Appointment with no StartTime added: " + appToInsert.item.getDescription());
+                            }
 
-        if (!containsAppointmentWithDescription(appToInsert.item.getDescription())) {
-            if (canAddAppointmentOfDuration(appointment.getDuration())) {
-                if (appointment.getStart() == null) {
-                    if (runner.next != null) {
-                        if (runner.item == null) {
-                            appToInsert.item.setStart(DAY_START);
-                            appToInsert.next = runner.next;
-                            runner.next = appToInsert;
-                            nrOfAppointments++;
-                            System.out.println("Appointment with no StartTime added: " + appToInsert.item.getDescription());
                         } else {
-                            appToInsert.item.setStart(runner.item.getEnd());
+                            appToInsert.next = dummyTail;
+                            runner.next = appToInsert;
+                            nrOfAppointments++;
+
+                        }
+                    } else {
+                        if (!checkOverlap(appointment)) {
                             appToInsert.next = runner.next;
                             runner.next = appToInsert;
                             nrOfAppointments++;
-                            System.out.println("Appointment with no StartTime added: " + appToInsert.item.getDescription());
+                            System.out.println("Appointment: " + appToInsert.item.getDescription() + " was added");
+                        } else {
+                            System.out.println("Appointment: " + appToInsert.item.getDescription() + " was not added");
                         }
-
-                    } else {
-                        appToInsert.next = dummyTail;
-                        runner.next = appToInsert;
-                        nrOfAppointments++;
-
                     }
                 } else {
-                    if (!checkOverlap(appointment)) {
-                        appToInsert.next = runner.next;
-                        runner.next = appToInsert;
-                        nrOfAppointments++;
-                        System.out.println("Appointment: " + appToInsert.item.getDescription() + " was added");
-                    } else {
-                        System.out.println("Appointment: " + appToInsert.item.getDescription() + " was not added");
-                    }
+                    System.out.println("Appointment: " + appToInsert.item.getDescription() + " Cant Add Appointment of This Durration on this Day");
                 }
             } else {
-                System.out.println("Appointment: " + appToInsert.item.getDescription() + " Cant Add Appointment of This Durration on this Day");
-            }
-        } else {
-            System.out.println("Appointment: " + appToInsert.item.getDescription() + " Appointment Description is not Unique Appointment will not be added");
+                System.out.println("Appointment: " + appToInsert.item.getDescription() + " Appointment Description is not Unique Appointment will not be added");
 
+            }
         }
     }
 
@@ -410,10 +425,21 @@ public final class Day {
             if (runner.item == null) {
                 if (runner.next != null) {
                     if (runner.next.item != null) {
-                        TimeGap tgFirst = new TimeGap(DAY_START,
-                                runner.next.item.getStart());
-                        System.out.println("First Node TimeGap: " + tgFirst.toString());
-                        timeGapArray[position] = tgFirst;
+                        
+                        if(runner.next.item.getStart().equals(DAY_START)){
+                            // APP START TIME IS EQUAL TO DAY START TIME WE DO NOTHING HERE
+                            // BECAUSE IF WE WOULD ADD AN ARRAY ENTRY ON THE NEXT LOOP 
+                            // THEY WOULD TAKE THIS NODE AGAIN AND WE WOULD HAVE THIS DUPED
+
+                        }else{
+                            System.out.println("DAY START");
+                            TimeGap tgFirst = new TimeGap(DAY_START,runner.next.item.getStart());
+                            System.out.println("First Node TimeGap: " + tgFirst.toString());
+                            timeGapArray[position] = tgFirst;
+                            position++;
+                        }
+                        
+                        
 
                     }
                 }
@@ -436,6 +462,7 @@ public final class Day {
                     TimeGap tg = new TimeGap(runner.item.getEnd(), runner.next.item.getStart());
                     System.out.println("Inside TimeGap: " + tg.toString());
                     timeGapArray[position] = tg;
+                    position++;
 
                 }
                 //Last Node
@@ -443,11 +470,12 @@ public final class Day {
                     TimeGap tgLast = new TimeGap(runner.item.getEnd(), DAY_END);
                     System.out.println("Last TimeGap: " + tgLast.toString());
                     timeGapArray[position] = tgLast;
+                    position++;
 
                 }
 
             }
-            position++;
+            
 
             runner = runner.next;
 
@@ -462,14 +490,19 @@ public final class Day {
      *
      * @return false if no overlap is given, true otherwise.
      */
-    public boolean checkOverlap(Appointment appointment
-    ) {
+    public boolean checkOverlap(Appointment appointment) {
         boolean run = true;
         runner = dummyHead;
 
         while (run) {
             if (runner.item == null) {
                 if (runner.next != null) {
+                    if (DAY_START.equals(appointment.getStart())){
+                        if (appointment.getEnd().isBefore(LUNCH_TIME)) {
+                            return false;
+
+                        }
+                    }
                     if (DAY_START.isBefore(appointment.getStart())) {
                         if (appointment.getEnd().isBefore(LUNCH_TIME)) {
                             return false;
@@ -505,6 +538,7 @@ public final class Day {
                 if (runner.next.item != null) {
                     if (runner.item.getEnd().isBefore(appointment.getStart())) {
                         if (appointment.getEnd().isBefore(runner.next.item.getStart())) {
+                            System.out.println("//////////\\\\\\\\\\ " + appointment.getDescription());
                             return false;
 
                         }
