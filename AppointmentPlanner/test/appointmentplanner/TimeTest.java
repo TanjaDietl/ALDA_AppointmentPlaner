@@ -109,6 +109,12 @@ public class TimeTest {
         
         time = new Time(0,2);
         assertEquals(time, Time.getProperTime(-1, 62));
+        
+        time = new Time(0,0);
+        assertEquals(time, Time.getProperTime(-220, -100));
+        
+        time = new Time(0,0);
+        assertEquals(time, Time.getProperTime(-60, 60));
     }
 
     /**
@@ -123,6 +129,11 @@ public class TimeTest {
         time = new Time(13,30);
         newTime = new Time(13,20);
         assertFalse(time.equals(newTime));
+        
+        time = new Time(13,30);
+        TimeSpan newTimeSpan = new TimeSpan(13,20);
+        assertFalse(time.equals(newTimeSpan));
+        
     }
 
     /**

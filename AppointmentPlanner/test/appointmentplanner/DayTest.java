@@ -34,7 +34,8 @@ public class DayTest {
         app3.setStart(time3);
         
     }
-    
+        
+
     @Test
     public void testDay() {
         assertEquals(1, testDay.getNrOfAppointments());
@@ -43,7 +44,8 @@ public class DayTest {
     /**
      * Test of getNrOfAppointments method, of class Day.
      */
-    
+        
+
     @Test
     public void testGetNrOfAppointments() {
         assertEquals(1, testDay.getNrOfAppointments());
@@ -52,7 +54,8 @@ public class DayTest {
     /**
      * Test of getNameOfTheDay method, of class Day.
      */
-    
+        
+
     @Test
     public void testGetNameOfTheDay() {
         assertEquals("Monday", testDay.getNameOfTheDay());
@@ -77,19 +80,25 @@ public class DayTest {
     
     @Test
     public void testCanAddAppointmentOfDuration() {
-        TimeSpan testDuration = new TimeSpan(4, 01);
-        assertFalse(testDay.canAddAppointmentOfDuration(testDuration));
-        assertTrue(testDay.canAddAppointmentOfDuration(new TimeSpan(4, 0)));
+        Appointment appBeforeLunch = new Appointment("Appointment before", new TimeSpan(1,00));
+        appBeforeLunch.setStart(new Time(9,00));
+
+        testDay.addAppointmentWithStartTimeSet(appBeforeLunch);
+        testDay.getAppointments().show();
+        
+        assertTrue(testDay.canAddAppointmentOfDuration(new TimeSpan(2,00)));
         testDay.removeAppointment("lunch break");
+        testDay.removeAppointment("Appointment before");   
         assertTrue(testDay.getNrOfAppointments() == 0);
-        assertTrue(testDay.canAddAppointmentOfDuration(testDuration));
-        assertFalse(testDay.canAddAppointmentOfDuration(new TimeSpan(9,01)));
+        assertTrue(testDay.canAddAppointmentOfDuration(new TimeSpan(8, 59)));
+
     }
 
     /**
      * Test of addAppointmentWithStartTimeSet method, of class Day.
      */
-    
+        
+
     @Test
     public void testAddAppointmentWithStartTimeSet() {
        Day testDay1 = new Day(3);
@@ -105,7 +114,7 @@ public class DayTest {
         appWST3.setStart(new Time(10,30));
         testDay1.addAppointmentWithStartTimeSet(appWST3);
         
-        Appointment appWST4 = new Appointment("testAddAppointmentWithStartTimeSet 4", new TimeSpan(2,0));
+        Appointment appWST4 = new Appointment("testAddAppointmentWithStartTimeSet 4", new TimeSpan(1,3));
         appWST4.setStart(new Time(8,31));
         testDay1.addAppointmentWithStartTimeSet(appWST4);
               
@@ -113,12 +122,12 @@ public class DayTest {
         appWST5.setStart(new Time(8,30));
         testDay1.addAppointmentWithStartTimeSet(appWST5);
         
-        assertEquals(5, testDay1.getNrOfAppointments());
+        assertEquals(6, testDay1.getNrOfAppointments());
         
         assertTrue(testDay1.containsAppointmentWithDescription("testAddAppointmentWithStartTimeSet 4"));
         testDay1.removeAppointment("testAddAppointmentWithStartTimeSet 4");
         assertFalse(testDay1.containsAppointmentWithDescription("testAddAppointmentWithStartTimeSet 4"));
-        assertEquals(4, testDay1.getNrOfAppointments());
+        assertEquals(5, testDay1.getNrOfAppointments());
         
         
       
@@ -127,6 +136,7 @@ public class DayTest {
     /**
      * Test of addAppointment method, of class Day.
      */
+    
 
     @Test
     public void testAddAppointment() {
@@ -154,7 +164,8 @@ public class DayTest {
     /**
      * Test of removeAppointment method, of class Day.
      */
-    
+        
+
     @Test
     public void testRemoveAppointment() {
         Appointment appointmentToDelte = new Appointment("deleteMe", new TimeSpan(1, 0));
@@ -186,7 +197,8 @@ public class DayTest {
      * Test of getAvailableStartTimesForAppointmentsOfDuration method, of class
      * Day.
      */
-    
+        
+
     @Test
     public void testGetAvailableStartTimesForAppointmentsOfDuration() {
         Day myDay = new Day(1);        
@@ -200,6 +212,7 @@ public class DayTest {
     /**
      * Test of getAvailableTimeGaps method, of class Day.
      */
+        
     
     @Test
     public void testGetAvailableTimeGaps() {
@@ -212,66 +225,80 @@ public class DayTest {
         assertEquals(new Time(12, 30), timeSpanArray[0].getEnd());
         assertEquals(new Time(13, 30), timeSpanArray[1].getStart());
         assertEquals(new Time(17, 30), timeSpanArray[1].getEnd());
+        
+        
+        Appointment testAppointmentOne = new Appointment("testOne", new TimeSpan(1,30));
+        testAppointmentOne.setStart(new Time(8,30));
+        myDay.addAppointmentWithStartTimeSet(testAppointmentOne);
+        
+        timeSpanArray = myDay.getAvailableTimeGaps();
+        for (TimeGap timeSpanArray1 : timeSpanArray) {
+            System.out.println("###########THISSSS: " + timeSpanArray1.toString());
+        }
+        assertEquals(2, timeSpanArray.length);
+        
     }
 
     /**
      * Test of testCheckOverlap method, of class Day.
      */
-    
+        
+
     @Test
     public void testCheckOverlap() {
         TimeSpan timeSpan1 = new TimeSpan(1, 0);
 
         //TEST APPBEFOREDAY
-        Time beforeDayStart1 = new Time(7, 0);
-        Appointment testAppointmentBeforeDay = new Appointment("BeforeDayTestAppointment", ts1);
-        testAppointmentBeforeDay.setStart(beforeDayStart1);
+        Appointment testAppointmentBeforeDay = new Appointment("testCheckOverlap before Day", ts1);
+        testAppointmentBeforeDay.setStart(new Time(7, 0));
         testDay.addAppointment(testAppointmentBeforeDay);
         assertTrue(testDay.checkOverlap(testAppointmentBeforeDay));
 
         //TEST APPAFTERDAY
-        Time afterDayStart1 = new Time(18, 0);
-        Appointment testAppointmentAfterDay = new Appointment("AfterDayTestAppointment", ts1);
-        testAppointmentAfterDay.setStart(afterDayStart1);
+        Appointment testAppointmentAfterDay = new Appointment("testCheckOverlap after Day", ts1);
+        testAppointmentAfterDay.setStart(new Time(18, 0));
         testDay.addAppointment(testAppointmentAfterDay);
         assertTrue(testDay.checkOverlap(testAppointmentAfterDay));
 
         //TEST1 NO-COLIDE WITH LUNCH
-        Time timeStart3 = new Time(15, 00);
-        Appointment testAppointment3 = new Appointment("TestAppointment Nr3", timeSpan1);
-        testAppointment3.setStart(timeStart3);
+        Appointment testAppointment3 = new Appointment("testCheckOverlap Nr1", timeSpan1);
+        testAppointment3.setStart(new Time(15, 00));
         testDay.addAppointmentWithStartTimeSet(testAppointment3);
-        assertTrue(testDay.containsAppointmentWithDescription("TestAppointment Nr3"));
+        assertTrue(testDay.containsAppointmentWithDescription("testCheckOverlap Nr1"));
 
         //TEST 2 SAME TIME
-        Time timeStart1 = new Time(12, 30);
-        Appointment testAppointment1 = new Appointment("TestAppointment Nr1", timeSpan1);
-        testAppointment1.setStart(timeStart1);
+        Appointment testAppointment1 = new Appointment("testCheckOverlap Nr2", timeSpan1);
+        testAppointment1.setStart(new Time(12, 30));
         testDay.addAppointmentWithStartTimeSet(testAppointment1);
-        assertFalse(testDay.containsAppointmentWithDescription("TestAppointment Nr1"));
+        assertFalse(testDay.containsAppointmentWithDescription("testCheckOverlap Nr2"));
 
         //TEST3 COLIDE WITH LUNCH
-        Time timeStart2 = new Time(12, 10);
-        Appointment testAppointment2 = new Appointment("TestAppointment Nr2", timeSpan1);
-        testAppointment2.setStart(timeStart2);
+        Appointment testAppointment2 = new Appointment("testCheckOverlap Nr3", timeSpan1);
+        testAppointment2.setStart(new Time(12, 10));
         assertTrue(testDay.checkOverlap(testAppointment2));
         testDay.addAppointmentWithStartTimeSet(testAppointment2);
-        assertFalse(testDay.containsAppointmentWithDescription("TestAppointment Nr2"));
+        assertFalse(testDay.containsAppointmentWithDescription("testCheckOverlap Nr3"));
 
         //TEST4 COLIDE WITH TEST1
-        Time timeStart4 = new Time(14, 30);
-        Appointment testAppointment4 = new Appointment("TestAppointment Nr5", timeSpan1);
-        testAppointment4.setStart(timeStart4);
+        Appointment testAppointment4 = new Appointment("testCheckOverlap Nr4", timeSpan1);
+        testAppointment4.setStart(new Time(14, 30));
         testDay.addAppointmentWithStartTimeSet(testAppointment4);
         assertTrue(testDay.checkOverlap(testAppointment4));
-        assertFalse(testDay.containsAppointmentWithDescription("TestAppointment Nr5"));
+        assertFalse(testDay.containsAppointmentWithDescription("testCheckOverlap Nr4"));
+        
+        //TEST AFTER LUNCH BUT BEFORE TEST 1
+        Appointment testAppointment5 = new Appointment("testCheckOverlap Nr5", new TimeSpan(0,30));
+        testAppointment5.setStart(new Time(13,31));
+        assertFalse(testDay.checkOverlap(testAppointment5));
+        testDay.addAppointmentWithStartTimeSet(testAppointment5);
         
     }
     
     /**
      * Test of getAvailableTimeGaps method, of class Day.
      */
-    
+        
+
     @Test
     public void testGetAppointments() {
         Day myQueDay = new Day(1);

@@ -130,6 +130,8 @@ public class QueueTest {
         assertFalse(q.isEmpty());
         q.get();
         assertTrue(q.isEmpty());
+        q.get();
+        assertTrue(q.isEmpty());
     }
     
     /**
