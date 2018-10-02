@@ -6,7 +6,6 @@
 package appointmentplanner;
 
 
-import java.util.Objects;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -94,11 +93,6 @@ public class TimeSpanTest {
         assertTrue(ts1.isSmallerThan(ts2));
         
         
-        TimeSpan ts3 = new TimeSpan(2,40);
-        TimeSpan ts4 = new TimeSpan(2,40);
-        assertFalse(ts3.isSmallerThan(ts4));
-        
-        
         
         
     }
@@ -119,33 +113,17 @@ public class TimeSpanTest {
         timeSpan = new TimeSpan(timeOne, timeTwo);
         timeSpanTwo = new TimeSpan(1,0);
         assertTrue(timeSpan.equals(timeSpanTwo));
-        
-        timeOne = new Time(12,0);
-        timeSpanTwo = new TimeSpan(1,0);
-        assertFalse(timeSpanTwo.equals(timeOne));
-        
-        assertFalse(timeSpanTwo.equals(null));
-        
-        
-        
-        
-        
     }
-    
-
-    
 
     /**
      * Test of toString method, of class TimeSpan.
      */
     @Test
-    public void testHash() {
-        timeSpanTwo = new TimeSpan(1,0);
-        Time time1 = new Time(1,0);
-        int hash = 5;
-        hash = 83 * hash + Objects.hashCode(time1);
-        
-        assertEquals(hash, timeSpanTwo.hashCode());
+    public void testToString() {
+        timeOne = new Time(12,0);
+        timeTwo = new Time(10,0);
+        timeSpan = new TimeSpan(timeOne, timeTwo);
+        assertEquals("TimeSpan{span=02:00}", timeSpan.toString());
     }
 
     /**

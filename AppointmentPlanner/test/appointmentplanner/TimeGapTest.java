@@ -5,7 +5,6 @@
  */
 package appointmentplanner;
 
-import java.util.Objects;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -85,19 +84,6 @@ public class TimeGapTest {
         
         assertFalse(timeGap.getStart().equals(timeGap2.getStart()));
         assertFalse(timeGap.getEnd().equals(timeGap2.getEnd()));
-        
-        
-        assertFalse(timeGap.getStart().equals(new Object()));
-        
-        
-        
-        TimeGap noSameStartTime = new TimeGap(new Time(12,00), new Time(15,00));
-        TimeGap noSameEndTime = new TimeGap(new Time(11,00), new Time(14,00));
-        TimeGap otherSameEndTime = new TimeGap(new Time(11,00), new Time(0,00));
-        
-        assertFalse(noSameStartTime.equals(noSameEndTime));
-        assertFalse(noSameEndTime.equals(otherSameEndTime));
-        
     }
     
 }
