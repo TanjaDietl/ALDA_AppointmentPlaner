@@ -38,7 +38,7 @@ public class TimeSpan {
         Time end;
         int calculatedSpanHour = 0;
         int calculatedSpanMinute = 0;
-
+        
         if (to.isBefore(from)) {
             start = to;
             end = from;
@@ -92,14 +92,10 @@ public class TimeSpan {
     public boolean isSmallerThan(TimeSpan timeSpan) {
         boolean result = false;
         
-        
-        if (getTimeSpanInMinutes() < timeSpan.getTimeSpanInMinutes()) {
-            
-                result = true;    
-
-        } else {
+        if(getTimeSpanInMinutes() < timeSpan.getTimeSpanInMinutes()){
+            result = true;
+        }else {
             result = false;
-            System.out.println("HERE2");
         }
         return result;
     }
@@ -153,6 +149,6 @@ public class TimeSpan {
      */
     public static int getMinutesInTimeSpan(Time from, Time to) {
         TimeSpan newSpan = new TimeSpan(from, to);
-        return ((newSpan.getHours() * 60) + newSpan.getMinutes());
+        return ((newSpan.getHours()*60)+newSpan.getMinutes());
     }
 }
