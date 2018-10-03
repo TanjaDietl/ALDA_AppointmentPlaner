@@ -57,9 +57,9 @@ public class TimeGap {
             return false;
         }
         final TimeGap other = (TimeGap) obj;
-        if (!Objects.equals(this.length, other.length)) {
-            return false;
-        }
+//        if (!Objects.equals(this.length, other.length)) {
+//            return false;
+//        }
         if (!Objects.equals(this.start, other.start)) {
             return false;
         }
