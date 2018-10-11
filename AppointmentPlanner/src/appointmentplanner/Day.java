@@ -1,5 +1,8 @@
 package appointmentplanner;
 
+import appointmentplanner.util.Priority;
+import appointmentplanner.util.Queue;
+import appointmentplanner.util.Stack;
 import java.util.*;
 //TODO
 
@@ -17,16 +20,11 @@ public final class Day {
     public final static Appointment LUNCH_BREAK = new Appointment("lunch break", new TimeSpan(1, 0));
 
     private Node<Appointment> lunchBreakNode;
-    private Node<Appointment> nextAppointment;
     private Node<Appointment> dummyHead;
     private Node<Appointment> dummyTail;
-    private Node<Appointment> currentNode;
     private Node<Appointment> lastNode;
     private Node<Appointment> runner;
-    private Node<Appointment> nextNode;
-    private Node<Appointment> nodeToInsert;
     public Node<Appointment> testNode;
-    private Queue<Appointment> appointmentsQueue;
     private final int nr;
     private boolean weekend = false;
 
@@ -36,6 +34,7 @@ public final class Day {
     private int nrOfAppointments = 0;
 
     private static class Node<E> {
+
         E item;
         Node<E> next;
 
@@ -43,11 +42,6 @@ public final class Day {
             this.item = item;
             next = null;
         }
-//
-//        @Override
-//        public String toString() {
-//            return "Item: " + item + " | next: " + next;
-//        }
     }
 
     /**
@@ -64,12 +58,11 @@ public final class Day {
 
         LUNCH_BREAK.setStart(LUNCH_TIME);
         this.nr = nr;
-        String dayName = DAYS[this.nr - 1];
 
         if (nr == 6 || nr == 7) {
             dummyHead.next = dummyTail;
             weekend = true;
-            this.nrOfAppointments =0;
+            this.nrOfAppointments = 0;
         } else {
             lunchBreakNode = new Node<>(LUNCH_BREAK);
 
@@ -160,7 +153,7 @@ public final class Day {
                                 initialized = false;
                             } else if (possibleTimeSpanBetweenNodes.equals(neededTimeSpanBetweenNodes)) {
                                 initialized = false;
-                                
+
                             } else {
                                 initialized = true;
                             }
@@ -177,7 +170,7 @@ public final class Day {
             if (initialized) {
                 break;
             }
-            
+
             runner = runner.next;
         }
 
@@ -278,12 +271,10 @@ public final class Day {
     ) {
         runner = dummyHead;
 
-        boolean run = true;
+        while (true) {
 
-        while (run) {
-            
-            if(runner.next == null && runner.item == null){
-                    break;
+            if (runner.next == null && runner.item == null) {
+                break;
             }
             /*
                 Search for matching string of description
@@ -298,8 +289,7 @@ public final class Day {
                 } else {
                     System.out.println("ERROR: No Appointment with given Name found");
                 }
-                
-                
+
             }
             lastNode = runner;
             runner = runner.next;
@@ -316,12 +306,11 @@ public final class Day {
      *
      * @return Returns true if an appointment with given description exists.
      */
-    public boolean containsAppointmentWithDescription(String description
-    ) {
-        boolean run = true;
+    public boolean containsAppointmentWithDescription(String description) {
+
         runner = dummyHead.next;
 
-        while (run) {
+        while (true) {
 
             if (runner.item != null) {
                 if (description == runner.item.getDescription()) {
@@ -387,10 +376,9 @@ public final class Day {
 
         int position = 0;
 
-        boolean run = true;
         runner = dummyHead;
-
-        while (run) {
+        boolean checking = true;
+        while (checking) {
 
             //First Node
             if (runner.item == null) {
@@ -459,10 +447,9 @@ public final class Day {
      * @return false if no overlap is given, true otherwise.
      */
     public boolean checkOverlap(Appointment appointment) {
-        boolean run = true;
-        runner = dummyHead;
+        this.runner = this.dummyHead;
 
-        while (run) {
+        while (true) {
             if (runner.item == null) {
                 if (runner.next != null) {
                     if (DAY_START.equals(appointment.getStart())) {
@@ -479,27 +466,22 @@ public final class Day {
                     }
                 }
             }
+
             if (runner.item != null) {
                 //Check if Appointment is Before DayStart
                 if (appointment.getStart().isBefore(DAY_START)) {
                     System.out.println("Appointment is before Day Start");
-
                     return true;
-
                 }
                 //Check if Appointment is After DayEnd
                 if (DAY_END.isBefore(appointment.getStart())) {
                     System.out.println("Appointment is after Day End");
-
                     return true;
-
                 }
                 //Check if Appointment has the Same startTime as an Existing Appointment
                 if (appointment.getStart().equals(runner.item.getStart())) {
                     System.out.println("Same Time, EXIT");
-
                     return true;
-
                 }
 
                 //Itterrate Thru the LinkedList of Nodes and search for a Overlapping Appointment
@@ -507,65 +489,90 @@ public final class Day {
                     if (runner.item.getEnd().isBefore(appointment.getStart())) {
                         if (appointment.getEnd().isBefore(runner.next.item.getStart())) {
                             return false;
-
                         }
                     } else {
                         System.out.println("runnerapp: " + runner.item.getDescription());
                         System.out.println("Appointment: " + appointment.getDescription() + ", is colliding with : " + runner.item.getDescription());
-
                         return true;
-
                     }
-
                 }
 
                 //if There are no next Node to compare
                 if (runner.next.item == null) {
                     if (!runner.item.getEnd().isBefore(appointment.getStart())) {
                         return true;
-
                     }
-                    
-
                 }
             }
+
             if (runner.next.item == null) {
                 break;
-
             }
             runner = runner.next;
-
         }
-
         //IF NO EXCEPTION HAPPENS STANDART RETURN IS TRUE WICH INDICATES A APPOINTMENT ADD.
         return false;
 
     }
 
+    /**
+     * This Method is creating a Queue of all Appointments
+     *
+     * @return a Queue of Appointments
+     */
     public Queue<Appointment> getAppointments() {
         Queue<Appointment> queue = new Queue();
         runner = dummyHead;
 
-        boolean run = true;
-
-        while (run) {
-
-            if (runner.item != null) {
-                queue.put(runner.item);
-
-            }
-
+        while (true) {
             if (runner.next == null) {
                 break;
-
+            }
+            if (runner.item != null) {
+                queue.put(runner.item);
             }
 
             runner = runner.next;
-
         }
-
         return queue;
 
+    }
+
+    /**
+     * This Method is creating a Stack of all Appointments with a certain
+     * priority
+     *
+     * @param priority The priority what is asked for
+     * @return a Stack with only the given prioritys
+     */
+    public Stack getAppointmentsOfPriority(Priority priority) {
+        Appointment[] appArray = new Appointment[nrOfAppointments + 1];
+        runner = dummyHead;
+        int stackSize = 0;
+
+        while (true) {
+            if (runner.item != null) {
+                System.out.println("1");
+                if(runner.item.compareTo(priority)== 0){
+                    appArray[stackSize] = runner.item;
+                    stackSize++;
+                }      
+            }
+            
+            if (runner.next == null) {
+                System.out.println("2");
+                break;
+            }
+            runner = runner.next;
+        }
+
+        Stack resultStack = new Stack();
+
+        for (int i = 0; i < stackSize; i++) {
+            resultStack.push(appArray[i]);
+        }
+
+        return resultStack;
     }
 
 }

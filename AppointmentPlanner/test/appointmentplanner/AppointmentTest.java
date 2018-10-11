@@ -5,6 +5,7 @@
  */
 package appointmentplanner;
 
+import appointmentplanner.util.Priority;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -17,6 +18,7 @@ public class AppointmentTest {
     Time startTime = new Time(01, 00);
     Time endTime = new Time(02,00);
     Appointment appointment = new Appointment("abc", new TimeSpan(startTime, endTime));
+    Appointment appointment1 = new Appointment("abc1", new TimeSpan(startTime, endTime), Priority.MEDIUM);
     /**
      * Test of getDescription method, of class Appointment.
      */
@@ -24,6 +26,7 @@ public class AppointmentTest {
     public void testAppointment() {
         appointment.setStart(startTime);
         assertEquals(appointment.getStart(), startTime);
+        assertEquals(Priority.valueOf("MEDIUM"),appointment1.getPriority());
     }
 
     /**
@@ -72,6 +75,23 @@ public class AppointmentTest {
     public void testGetStart() {
        appointment.setStart(startTime);
        assertEquals(startTime, appointment.getStart());
+    }
+    
+    /**
+     * Test of getStart method, of class Appointment.
+     */
+    @Test
+    public void testGetPriority() {
+       appointment.setPriority(Priority.HIGH);
+       assertEquals(Priority.valueOf("HIGH"), appointment.getPriority());
+    }
+    /**
+     * Test of getStart method, of class Appointment.
+     */
+    @Test
+    public void testSetPriority() {
+       appointment.setPriority(Priority.MEDIUM);
+       assertEquals(Priority.valueOf("MEDIUM"), appointment.getPriority());
     }
     
 }

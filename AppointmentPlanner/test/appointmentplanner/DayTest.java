@@ -5,9 +5,13 @@
  */
 package appointmentplanner;
 
+import appointmentplanner.util.Priority;
+import appointmentplanner.util.Queue;
+import appointmentplanner.util.Stack;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Ignore;
 
 /**
  *
@@ -34,7 +38,7 @@ public class DayTest {
         app3.setStart(time3);
         
     }
-        
+       
     @Test
     public void testDay() {
         assertEquals(1, testDay.getNrOfAppointments());
@@ -52,7 +56,7 @@ public class DayTest {
     /**
      * Test of getNameOfTheDay method, of class Day.
      */
-        
+       
     @Test
     public void testGetNameOfTheDay() {
         assertEquals("Monday", testDay.getNameOfTheDay());
@@ -74,7 +78,7 @@ public class DayTest {
     /**
      * Test of canAddAppointmentOfDuration method, of class Day.
      */
-
+    
     @Test
     public void testCanAddAppointmentOfDuration() {
         Day tDay = new Day(2);
@@ -245,6 +249,7 @@ public class DayTest {
     /**
      * Test of containsAppointmentWithDescription method, of class Day.
      */
+    
     @Test
     public void testContainsAppointmentWithDescription() {        
         Appointment appointmentToDelte = new Appointment("HelloWorld", new TimeSpan(1, 0));
@@ -259,7 +264,7 @@ public class DayTest {
      * Test of getAvailableStartTimesForAppointmentsOfDuration method, of class
      * Day.
      */
-        
+    
     @Test
     public void testGetAvailableStartTimesForAppointmentsOfDuration() {
         Day myDay = new Day(1);        
@@ -273,6 +278,7 @@ public class DayTest {
     /**
      * Test of getAvailableTimeGaps method, of class Day.
      */
+    
     @Test
     public void testGetAvailableTimeGaps() {
         TimeSpan ts = new TimeSpan(1, 0);
@@ -374,7 +380,7 @@ public class DayTest {
     /**
      * Test of getAvailableTimeGaps method, of class Day.
      */
-        
+            
     @Test
     public void testGetAppointments() {
         Day myQueDay = new Day(1);
@@ -412,6 +418,41 @@ public class DayTest {
         
         
         
+    }
+    
+    @Test
+    public void testGetAppointmentsOfPriority() {
+        Day myStackDay = new Day(1);
+
+        Appointment appT5 = new Appointment("Appointment 5", new TimeSpan(0,59), Priority.HIGH);
+        appT5.setStart(new Time(13,31));
+        myStackDay.addAppointmentWithStartTimeSet(appT5);
+        
+        Appointment appT4 = new Appointment("Appointment 4", new TimeSpan(0,59), Priority.HIGH);
+        appT4.setStart(new Time(11,30));
+        myStackDay.addAppointmentWithStartTimeSet(appT4);
+        
+        Appointment appT3 = new Appointment("Appointment 3", new TimeSpan(0,59), Priority.HIGH);
+        appT3.setStart(new Time(10,30));
+        myStackDay.addAppointmentWithStartTimeSet(appT3);
+        
+        Appointment appT2 = new Appointment("Appointment 2", new TimeSpan(0,59));
+        appT2.setStart(new Time(9,30));
+        myStackDay.addAppointmentWithStartTimeSet(appT2);
+              
+        Appointment appT1 = new Appointment("Appointment 1", new TimeSpan(0,59));
+        appT1.setStart(new Time(8,30));
+        myStackDay.addAppointmentWithStartTimeSet(appT1);
+        
+
+        Stack stack = myStackDay.getAppointmentsOfPriority(Priority.HIGH);
+
+        assertTrue(!stack.isEmpty());
+        assertEquals(appT5, stack.pop());
+        assertEquals(appT4, stack.pop());
+        assertEquals(appT3, stack.pop());
+        assertTrue(stack.isEmpty());
+          
     }
     
 

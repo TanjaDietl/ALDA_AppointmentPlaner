@@ -2,16 +2,38 @@ package appointmentplanner;
 
 //TODO
 
+import appointmentplanner.util.Priority;
+
+
 /**
  *
  * @author ode
  */
-public final class Appointment {
+public final class Appointment implements Comparable{
 
     private final String description;
     private final TimeSpan duration;
     private Time start;
     private Time end;
+    private Priority priority;
+
+    
+    /**
+     * Sets the priority for this appointment.
+     *
+     * @param priority The priority  for this appointment.
+     */
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
+    
+    /**
+     * @return The priority of this appointment.
+     */
+    public Priority getPriority() {
+        return priority;
+    }
 
     /**
      * Constructs a new appointment with given description and duration. The
@@ -23,6 +45,21 @@ public final class Appointment {
     public Appointment(String description, TimeSpan duration) {
         this.description = description;
         this.duration = duration;
+        this.priority = Priority.LOW;
+    }
+    
+    /**
+     * Constructs a new appointment with given description and duration. The
+     * priority (AFTER WEEK 4) is set to LOW.
+     *
+     * @param description The description of the appointment.
+     * @param duration The time span needed for this appointment.
+     * @param priority The priority of this appointment
+     */
+    public Appointment(String description, TimeSpan duration, Priority priority) {
+        this.description = description;
+        this.duration = duration;
+        this.priority = priority;
     }
 
     /**
@@ -75,5 +112,20 @@ public final class Appointment {
     @Override
     public String toString() {
         return "Appointment: "+ description +", Start Time: "+ start+", End Time: "+ end+", "+ duration;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        
+        Priority priority = (Priority)o;
+        
+        if(this.getPriority().ordinal() > priority.ordinal()){
+            return -1;
+        }
+        if(this.getPriority().ordinal() < priority.ordinal()){
+            return 1;
+        } 
+        
+        return 0;
     }
 }
