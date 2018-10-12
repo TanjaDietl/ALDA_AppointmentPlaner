@@ -68,6 +68,15 @@ public class QueueTest {
         assertEquals(5, q.getSize());
         assertTrue(q.isFull());
         
+        q.removeAll();
+        assertTrue(q.isEmpty());
+        
+        q.put("item 1");
+        assertFalse(q.isEmpty());
+        q.get();
+        assertTrue(q.isEmpty());
+
+        
     }
     
    

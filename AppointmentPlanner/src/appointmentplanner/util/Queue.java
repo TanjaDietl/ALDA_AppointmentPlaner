@@ -11,10 +11,10 @@ import appointmentplanner.Appointment;
  *
  * @author sriem
  */
-public class Queue<Node> {
+public class Queue<E>{
 
     private final Node[] queue;
-    private int initialSizeValue;
+    private final int initialSizeValue;
     private int index = 0;
     private int front = 0;
     private int rear = 0;
@@ -37,8 +37,8 @@ public class Queue<Node> {
         }
     }
 
-    public void put(Appointment item) {
-        Node<Appointment> data = new Node(item);
+    public void put(E item) {
+        Node<E> data = new Node(item);
         
         if (!isFull()) {
             if(isEmpty()){
