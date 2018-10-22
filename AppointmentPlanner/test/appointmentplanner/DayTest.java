@@ -38,7 +38,6 @@ public class DayTest {
         app3.setStart(time3);
         
     }
-       
     @Test
     public void testDay() {
         assertEquals(1, testDay.getNrOfAppointments());
@@ -47,7 +46,6 @@ public class DayTest {
     /**
      * Test of getNrOfAppointments method, of class Day.
      */
-        
     @Test
     public void testGetNrOfAppointments() {
         assertEquals(1, testDay.getNrOfAppointments());
@@ -56,7 +54,6 @@ public class DayTest {
     /**
      * Test of getNameOfTheDay method, of class Day.
      */
-       
     @Test
     public void testGetNameOfTheDay() {
         assertEquals("Monday", testDay.getNameOfTheDay());
@@ -78,7 +75,6 @@ public class DayTest {
     /**
      * Test of canAddAppointmentOfDuration method, of class Day.
      */
-    
     @Test
     public void testCanAddAppointmentOfDuration() {
         Day tDay = new Day(2);
@@ -102,18 +98,16 @@ public class DayTest {
         
         
         
-        
+        Day tDay2 = new Day(2);
         
         Appointment appBeforeLunch = new Appointment("Appointment before", new TimeSpan(1,00));
         appBeforeLunch.setStart(new Time(9,00));
-
-        testDay.addAppointmentWithStartTimeSet(appBeforeLunch);
-        
-        assertTrue(testDay.canAddAppointmentOfDuration(new TimeSpan(2,00)));
-        testDay.removeAppointment("lunch break");
-        testDay.removeAppointment("Appointment before");   
-        assertTrue(testDay.getNrOfAppointments() == 0);
-        assertTrue(testDay.canAddAppointmentOfDuration(new TimeSpan(8, 59)));
+        tDay2.addAppointmentWithStartTimeSet(appBeforeLunch);
+        assertTrue(tDay2.canAddAppointmentOfDuration(new TimeSpan(2,00)));
+        tDay2.removeAppointment("lunch break");
+        tDay2.removeAppointment("Appointment before");   
+        assertTrue(tDay2.getNrOfAppointments() == 0);
+        assertTrue(tDay2.canAddAppointmentOfDuration(new TimeSpan(8, 59)));
         
         
 
@@ -123,7 +117,6 @@ public class DayTest {
     /**
      * Test of addAppointmentWithStartTimeSet method, of class Day.
      */
-        
     @Test
     public void testAddAppointmentWithStartTimeSet() {
        Day testDay1 = new Day(3);
@@ -194,12 +187,11 @@ public class DayTest {
         
         
       
-    }
+    } 
 
     /**
      * Test of addAppointment method, of class Day.
      */
-    
     @Test
     public void testAddAppointment() {
         Day testDay2 = new Day(4);
@@ -218,7 +210,7 @@ public class DayTest {
         Appointment appWST5 = new Appointment("testAddAppointment 5", new TimeSpan(1,59));
         testDay2.addAppointment(appWST5);
         
-        //testDay2.getAppointments().show();
+        testDay2.getAppointments().show();
         assertEquals(6, testDay2.getNrOfAppointments());
         
         
@@ -227,7 +219,6 @@ public class DayTest {
     /**
      * Test of removeAppointment method, of class Day.
      */
-        
     @Test
     public void testRemoveAppointment() {
         Appointment appointmentToDelte = new Appointment("deleteMe", new TimeSpan(1, 0));
@@ -249,7 +240,6 @@ public class DayTest {
     /**
      * Test of containsAppointmentWithDescription method, of class Day.
      */
-    
     @Test
     public void testContainsAppointmentWithDescription() {        
         Appointment appointmentToDelte = new Appointment("HelloWorld", new TimeSpan(1, 0));
@@ -264,7 +254,6 @@ public class DayTest {
      * Test of getAvailableStartTimesForAppointmentsOfDuration method, of class
      * Day.
      */
-    
     @Test
     public void testGetAvailableStartTimesForAppointmentsOfDuration() {
         Day myDay = new Day(1);        
@@ -278,7 +267,6 @@ public class DayTest {
     /**
      * Test of getAvailableTimeGaps method, of class Day.
      */
-    
     @Test
     public void testGetAvailableTimeGaps() {
         TimeSpan ts = new TimeSpan(1, 0);
@@ -326,7 +314,6 @@ public class DayTest {
      * Test of testCheckOverlap method, of class Day.
      */
         
-    
     @Test
     public void testCheckOverlap() {
         TimeSpan timeSpan1 = new TimeSpan(1, 0);
@@ -380,7 +367,6 @@ public class DayTest {
     /**
      * Test of getAvailableTimeGaps method, of class Day.
      */
-            
     @Test
     public void testGetAppointments() {
         Day myQueDay = new Day(1);
@@ -419,7 +405,6 @@ public class DayTest {
         
         
     }
-    
     @Test
     public void testGetAppointmentsOfPriority() {
         Day myStackDay = new Day(1);

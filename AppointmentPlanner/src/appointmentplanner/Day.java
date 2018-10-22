@@ -240,7 +240,7 @@ public final class Day {
                                 System.out.println("Appointment with no StartTime added: " + this.getNrOfAppointments() + " = " + appToInsert.item.getDescription());
                             }
 
-                        }
+                        } 
                     } else {
                         if (!checkOverlap(appointment)) {
                             appToInsert.next = runner.next;
