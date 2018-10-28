@@ -11,77 +11,93 @@ import appointmentplanner.Appointment;
  *
  * @author sriem
  */
-public class Queue<E>{
+public class Queue<Item> {
 
-    private final Node[] queue;
+    private Node<Item>[] queue;
+    private Node<Item>[] tempQueue;
     private final int initialSizeValue;
     private int index = 0;
     private int front = 0;
-    private int rear = 0;
-    private Node<Appointment> runner;
+    private Node<Item> runner;
     private boolean run = true;
 
     public Queue() {
-        this.initialSizeValue = 5;
+        this.initialSizeValue = 200;
         this.queue = new Node[initialSizeValue];
 
     }
 
-    private static class Node<E> {
-        E item;
-        Node<E> next;
+    private static class Node<Item> {
 
-        Node(E item) {
+        Item item;
+        Node<Item> next;
+
+        Node(Item item) {
             this.item = item;
             next = null;
         }
     }
 
-    public void put(E item) {
-        Node<E> data = new Node(item);
-        
+    public void put(Item item) {
+        Node<Item> data = new Node(item);
+
         if (!isFull()) {
-            if(isEmpty()){
-                queue[rear] = data;
-                rear = (rear + 1) % initialSizeValue;
+            if (isEmpty()) {
+                queue[index] = data;
                 index++;
             } else {
-                runner = queue[rear-1];
-                queue[rear] = data;
-                runner.next = queue[rear];
-                rear = (rear + 1) % initialSizeValue;
+                runner = queue[index - 1];
+                queue[index] = data;
+                runner.next = queue[index];
                 index++;
             }
-                
-        } else {
+        } else if (isFull()) {
             System.out.println("Queue is Full");
         }
 
     }
 
-    public Node get() {
+    public Item get() {
+        Item itemToReturn = null;
         if (!isEmpty()) {
-            front = (front + 1) % initialSizeValue;
+            itemToReturn = queue[front].item;
+            copyArray();
             index--;
-        }else{
-            System.out.println("Queue is Empty");
+        } else if (isEmpty()){
+            copyArray();
+            index = 0;
+            System.out.println("Queue is Empty ");
+            
         }
-        return queue[front];
+        return itemToReturn;
     }
 
     public void show() {
         System.out.println("========== QUEUE ELEMENTS ==========");
         for (int i = 0; i < index; i++) {
-            System.out.println("Information: "+ queue[(front + i) % initialSizeValue].item );
-            System.out.println("Current Node: "+ queue[(front + i) % initialSizeValue] + " Next Node: " + queue[(front + i) % initialSizeValue].next );
+            System.out.println("Information: " + queue[(front + i) % initialSizeValue].item);
+            System.out.println("Current Node: " + queue[(front + i) % initialSizeValue] + " Next Node: " + queue[(front + i) % initialSizeValue].next);
+            System.out.println("index: " + index);
+            System.out.println("front: " + front);
         }
         System.out.println("========== QUEUE DONE ==========");
     }
 
     public void removeAll() {
-        for (int i = 0; i < queue.length; i++) {
-            get();
+        index = 0;
+        front = 0;
+        tempQueue = new Node[200];
+        queue = tempQueue;
+    }
+    
+    private void copyArray(){
+        tempQueue = new Node[200];
+        int tempIndex = 0;
+        for (int i = 1; i < index; i++) {
+            tempQueue[tempIndex] = queue[i];
+            tempIndex++;
         }
+        queue = tempQueue;
     }
 
     public int getSize() {
@@ -89,8 +105,7 @@ public class Queue<E>{
     }
 
     public boolean isEmpty() {
-
-        return getSize() == 0;
+        return index == 0;
     }
 
     public boolean isFull() {

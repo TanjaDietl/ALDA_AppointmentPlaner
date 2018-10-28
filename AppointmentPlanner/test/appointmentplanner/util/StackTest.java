@@ -21,7 +21,7 @@ public class StackTest {
 
     @Test
     public void testSize() {
-        Stack stack = new Stack();
+        Stack<Appointment> stack = new Stack<Appointment>();
         Appointment app1= new Appointment("TestAppointment1", new TimeSpan(2, 0));
         stack.push(app1);
         assertEquals(1, stack.size());
@@ -29,7 +29,7 @@ public class StackTest {
 
     @Test
     public void testIsEmpty() {
-       Stack stack = new Stack();
+       Stack<Appointment> stack = new Stack<Appointment>();
        Appointment app1= new Appointment("TestAppointment1", new TimeSpan(2, 0));
         stack.push(app1);
         assertEquals(1, stack.size());
@@ -41,7 +41,7 @@ public class StackTest {
 
     @Test
     public void testPush() { 
-        Stack stack = new Stack();
+        Stack<Appointment> stack = new Stack<Appointment>();
         Appointment app1= new Appointment("TestAppointment1", new TimeSpan(2, 0));
         stack.push(app1);
         assertEquals(1, stack.size());
@@ -54,7 +54,7 @@ public class StackTest {
 
     @Test 
     public void testPop() {
-        Stack stack = new Stack();
+        Stack<Appointment> stack = new Stack<Appointment>();
         Appointment app1= new Appointment("TestAppointment1", new TimeSpan(2, 0));
         stack.push(app1);
         stack.pop();

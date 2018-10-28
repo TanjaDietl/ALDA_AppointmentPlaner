@@ -10,19 +10,20 @@ import appointmentplanner.Appointment;
 /**
  *
  * @author sriem
+ * @param <E>
  */
-public class Stack {
+public class Stack<Item> {
 
     private int itemPos;
     private int lastPos;
     private int stackSize = 200;
     private boolean firstItem = true;
-    private Appointment[] appointmentArray;
+    private Object[] appointmentArray;
     
     
     
     public Stack() {
-        appointmentArray = new Appointment[stackSize];
+        appointmentArray = new Object[stackSize];
         lastPos = 0;
         itemPos = 0;
 
@@ -54,7 +55,7 @@ public class Stack {
      *
      * @param item The Appointment
      */
-    public void push(Appointment item) {
+    public void push(Item item) {
         if (lastPos == 0 && itemPos == 0) {
             appointmentArray[itemPos] = item;
             lastPos++;
@@ -75,9 +76,10 @@ public class Stack {
      *
      * @return the last added object of the Stack
      */
-    public Appointment pop() {
-        Appointment result = appointmentArray[itemPos];
+    public Item pop() {
         //Regular expresion
+        
+        Object result = appointmentArray[itemPos];
         if (lastPos != 0) {
             itemPos--;
             lastPos--;
@@ -89,9 +91,9 @@ public class Stack {
         // no Further Pops possible Stack is empty
         if(itemPos ==  0 && lastPos == 0){
             appointmentArray[itemPos] = null;
-            return result;
+            return (Item)result;
         }
         
-        return result;
+        return (Item)result;
     }
 }

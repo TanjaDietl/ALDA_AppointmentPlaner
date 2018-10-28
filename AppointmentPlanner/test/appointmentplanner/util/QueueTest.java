@@ -23,6 +23,7 @@ public class QueueTest {
     /**
      * Test of Queue Class, of class Queue.
      */
+    
     @Test
     public void testQueue() { 
         Queue qTest = new Queue();
@@ -65,9 +66,7 @@ public class QueueTest {
         assertEquals(5, q.getSize());
         
         q.put(app6);
-        assertEquals(5, q.getSize());
-        assertTrue(q.isFull());
-        
+        assertEquals(6, q.getSize());
         q.removeAll();
         assertTrue(q.isEmpty());
         
@@ -75,6 +74,29 @@ public class QueueTest {
         assertFalse(q.isEmpty());
         q.get();
         assertTrue(q.isEmpty());
+        
+        Queue<String> q2 = new Queue();
+        q2.put("item1");
+        q2.put("item2");
+        String get = q2.get();
+        String get2 = q2.get();
+        assertTrue(q2.isEmpty());
+        assertEquals("item1", get);
+        assertEquals("item2", get2);
+
+        Queue<Appointment> q3 = new Queue();
+        Appointment app7 = new Appointment("Ali B", new TimeSpan(1, 0));
+        Appointment app8 = new Appointment("Bert1", new TimeSpan(1, 0));
+        Appointment app9 = new Appointment("Bert2", new TimeSpan(1, 0));
+        
+        q3.put(app7);
+        q3.put(app8);
+        q3.put(app9);
+        
+        assertEquals(app7, q3.get());
+        assertEquals(app8, q3.get());
+        assertEquals(app9, q3.get());
+        
 
         
     }
@@ -84,6 +106,7 @@ public class QueueTest {
     /**
      * Test of testRemoveAll method, of class Queue.
      */
+    
     @Test
     public void testRemoveAll() { 
         Appointment app1 = new Appointment("App1", new TimeSpan(1, 0));
@@ -119,7 +142,7 @@ public class QueueTest {
     /**
      * Test of getSize method, of class Queue.
      */
-
+    
     @Test
     public void testGetSize() {
         Appointment app1 = new Appointment("App1", new TimeSpan(1, 0));
@@ -132,14 +155,15 @@ public class QueueTest {
     /**
      * Test of testIsEmpty method, of class Queue.
      */
-
+    
     @Test
     public void testIsEmpty() {
         Appointment app1 = new Appointment("App1", new TimeSpan(1, 0));
-        
+        System.out.println("GET EMPTY");
         assertTrue(q.isEmpty());
         q.put(app1);
         assertFalse(q.isEmpty());
+        assertEquals(app1, q.get());
         q.get();
         assertTrue(q.isEmpty());
         q.get();
@@ -149,27 +173,15 @@ public class QueueTest {
     /**
      * Test of testIsFull method, of class Queue.
      */
-
+    
     @Test
     public void testIsFull() {
-        Appointment app1 = new Appointment("App1", new TimeSpan(1, 0));
-        Appointment app2 = new Appointment("App2", new TimeSpan(1, 0));
-        Appointment app3 = new Appointment("App3", new TimeSpan(1, 0));
-        Appointment app4 = new Appointment("App4", new TimeSpan(1, 0));
-        Appointment app5 = new Appointment("App5", new TimeSpan(1, 0));
-        Appointment app6 = new Appointment("App6", new TimeSpan(1, 0));
-        assertTrue(q.isEmpty());  
-        assertFalse(q.isFull());
-        
-        q.put(app1);   
-        q.put(app2);     
-        q.put(app3);      
-        q.put(app4);        
-        assertFalse(q.isFull());
-        q.put(app5);
+
+        for (int i = 0; i < 201; i++) {
+            q.put("APP");
+        }
+        assertEquals(200, q.getSize());
         assertTrue(q.isFull());
-        q.put(app6);
-        assertEquals(5, q.getSize());
     }
 
 }

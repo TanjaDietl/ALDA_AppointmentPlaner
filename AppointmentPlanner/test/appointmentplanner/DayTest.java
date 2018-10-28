@@ -38,6 +38,7 @@ public class DayTest {
         app3.setStart(time3);
         
     }
+    
     @Test
     public void testDay() {
         assertEquals(1, testDay.getNrOfAppointments());
@@ -46,6 +47,7 @@ public class DayTest {
     /**
      * Test of getNrOfAppointments method, of class Day.
      */
+    
     @Test
     public void testGetNrOfAppointments() {
         assertEquals(1, testDay.getNrOfAppointments());
@@ -54,6 +56,7 @@ public class DayTest {
     /**
      * Test of getNameOfTheDay method, of class Day.
      */
+    
     @Test
     public void testGetNameOfTheDay() {
         assertEquals("Monday", testDay.getNameOfTheDay());
@@ -75,6 +78,7 @@ public class DayTest {
     /**
      * Test of canAddAppointmentOfDuration method, of class Day.
      */
+    
     @Test
     public void testCanAddAppointmentOfDuration() {
         Day tDay = new Day(2);
@@ -117,6 +121,7 @@ public class DayTest {
     /**
      * Test of addAppointmentWithStartTimeSet method, of class Day.
      */
+    
     @Test
     public void testAddAppointmentWithStartTimeSet() {
        Day testDay1 = new Day(3);
@@ -192,6 +197,7 @@ public class DayTest {
     /**
      * Test of addAppointment method, of class Day.
      */
+    
     @Test
     public void testAddAppointment() {
         Day testDay2 = new Day(4);
@@ -219,6 +225,7 @@ public class DayTest {
     /**
      * Test of removeAppointment method, of class Day.
      */
+    
     @Test
     public void testRemoveAppointment() {
         Appointment appointmentToDelte = new Appointment("deleteMe", new TimeSpan(1, 0));
@@ -240,6 +247,7 @@ public class DayTest {
     /**
      * Test of containsAppointmentWithDescription method, of class Day.
      */
+    
     @Test
     public void testContainsAppointmentWithDescription() {        
         Appointment appointmentToDelte = new Appointment("HelloWorld", new TimeSpan(1, 0));
@@ -254,6 +262,7 @@ public class DayTest {
      * Test of getAvailableStartTimesForAppointmentsOfDuration method, of class
      * Day.
      */
+    
     @Test
     public void testGetAvailableStartTimesForAppointmentsOfDuration() {
         Day myDay = new Day(1);        
@@ -267,6 +276,7 @@ public class DayTest {
     /**
      * Test of getAvailableTimeGaps method, of class Day.
      */
+    
     @Test
     public void testGetAvailableTimeGaps() {
         TimeSpan ts = new TimeSpan(1, 0);
@@ -367,6 +377,7 @@ public class DayTest {
     /**
      * Test of getAvailableTimeGaps method, of class Day.
      */
+    
     @Test
     public void testGetAppointments() {
         Day myQueDay = new Day(1);
@@ -397,14 +408,32 @@ public class DayTest {
         myTestQueue = myQueDay.getAppointments();
         
         myTestQueue.show();
-        assertEquals(5, myTestQueue.getSize());
+        assertEquals(6, myTestQueue.getSize());
         
+        
+        Queue<Appointment> appQueue = new Queue();
+        Day myQueDay1 = new Day(2);
+        Appointment app1 = new Appointment("Ali B", new TimeSpan(1, 0));
+        myQueDay1.addAppointment(app1);
+        Appointment app2 = new Appointment("Bert1", new TimeSpan(1, 0));
+        myQueDay1.addAppointment(app2);
+        Appointment app3 = new Appointment("Bert2", new TimeSpan(1, 0));
+        myQueDay1.addAppointment(app3);
+        
+        
+        appQueue = myQueDay1.getAppointments();
+        System.out.println("#+#+#+#+#+#+#+#+#+#+##+#+#+#+");
+        appQueue.show();
+        assertEquals(app1, appQueue.get());
+        assertEquals(app2, appQueue.get());
+        assertEquals(app3, appQueue.get());
         
         
         
         
         
     }
+
     @Test
     public void testGetAppointmentsOfPriority() {
         Day myStackDay = new Day(1);
@@ -430,12 +459,15 @@ public class DayTest {
         myStackDay.addAppointmentWithStartTimeSet(appT1);
         
 
-        Stack stack = myStackDay.getAppointmentsOfPriority(Priority.HIGH);
+        Stack<Appointment> stack = myStackDay.getAppointmentsOfPriority(Priority.HIGH);
 
         assertTrue(!stack.isEmpty());
-        assertEquals(appT5, stack.pop());
-        assertEquals(appT4, stack.pop());
+        System.out.println("#+#+#+#+#+#+#+#+#+#+#+#+##++#+#+#+#+#");
+        System.out.println("Stac Size: " + stack.size());
+
         assertEquals(appT3, stack.pop());
+        assertEquals(appT4, stack.pop());
+        assertEquals(appT5, stack.pop());
         assertTrue(stack.isEmpty());
           
     }

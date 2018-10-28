@@ -231,13 +231,15 @@ public final class Day {
                                 appToInsert.next = runner.next;
                                 runner.next = appToInsert;
                                 nrOfAppointments++;
-                                System.out.println("Appointment with no StartTime added: " + this.getNrOfAppointments() + " /" + appToInsert.item.getDescription());
+                                System.out.println("Appointment with no StartTime "
+                                        + "added: " + this.getNrOfAppointments() + " /" + appToInsert.item.getDescription());
                             } else {
                                 appToInsert.item.setStart(runner.item.getEnd());
                                 appToInsert.next = runner.next;
                                 runner.next = appToInsert;
                                 nrOfAppointments++;
-                                System.out.println("Appointment with no StartTime added: " + this.getNrOfAppointments() + " = " + appToInsert.item.getDescription());
+                                System.out.println("Appointment with no StartTime "
+                                        + "added: " + this.getNrOfAppointments() + " = " + appToInsert.item.getDescription());
                             }
 
                         } 
@@ -566,10 +568,11 @@ public final class Day {
             runner = runner.next;
         }
 
-        Stack resultStack = new Stack();
-
-        for (int i = 0; i < stackSize; i++) {
-            resultStack.push(appArray[i]);
+        Stack<Appointment> resultStack = new Stack();
+        
+        //Revert the Array
+        for (int i = stackSize; i > 0; i--) {
+            resultStack.push(appArray[i-1]);
         }
 
         return resultStack;
